@@ -1,56 +1,40 @@
 package controllers;
 
+import java.util.*;
+
+import models.Persona;
+
 public class PersonaController {
-    private String nombre;
-    private int edad;
+    public Set <Persona> filtrarYOrdenart(
+        List <Persona> personas, int edad){
 
-    
-    public PersonaController(String nombre, int edad) {
-        this.nombre = nombre;
-        this.edad = edad;
-    }
-    public String getNombre() {
-        return nombre;
-    }
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-    public int getEdad() {
-        return edad;
-    }
-    public void setEdad(int edad) {
-        this.edad = edad;
-    }
-    
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((nombre == null) ? 0 : nombre.hashCode());
-        result = prime * result + edad;
-        return result;
-    }
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        PersonaController other = (PersonaController) obj;
-        if (nombre == null) {
-            if (other.nombre != null)
-                return false;
-        } else if (!nombre.equals(other.nombre))
-            return false;
-        if (edad != other.edad)
-            return false;
-        return true;
-    }
+            Set<Persona> personasFiltradas = new TreeSet<>(
+                (p1, p2) -> {
+                    int compEdad = Integer.compare(p2.getEdad(), p1.getEdad());
+                    if(compEdad != 0){
+                        return compEdad;
+                    }
+                    return p2.getNombre().compareToIgnoreCase(p1.getNombre());
+                }
+            );
+            for (Persona persona : personas) {
+                if (persona.getEdad() >= edad) {
+                personasFiltradas.add(persona);
+                }
+            }
+            return personasFiltradas;
+        }
 
-    @Override
-    public String toString() {
-        return "PersonaController [nombre=" + nombre + ", edad=" + edad + "]";
+    public Map<String, Set<Persona>> agruparPorEdad(List<Persona> personas){
+        
+        Map<String, Set <Persona>> personasAgrupadas = new TreeMap<>();
+        personasAgrupadas.put("JOVEN", new LinkedHashSet<String>());
+        for (Persona persona : personas) {
+            String primerNombre = persona.getNombre().split(" ")[0];
+
+
+            
+        }
+        return agruparPorEdad(personas);
     }
 }
